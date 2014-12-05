@@ -145,7 +145,7 @@ mem_t init_mem(int len)
     result->len = len;
     if (shmptr == (void *) -1)
     {
-        if ((shmid = shmget(0x3A2, len, SHM_R | SHM_W | IPC_CREAT)) < 0)
+        if ((shmid = shmget(0x10A, len, SHM_R | SHM_W | IPC_CREAT)) < 0)
         {
             printf("error shmget\n");
             exit(-1);

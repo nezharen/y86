@@ -556,7 +556,6 @@ void sim_init()
     mem_wb_curr = mem_wb_state->current;
 
     sim_reset();
-    clear_mem(mem);
 }
 
 void sim_reset()

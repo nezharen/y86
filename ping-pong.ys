@@ -1,6 +1,6 @@
 	.pos 0
 irmovl $1, %esi
-irmovl $2, %edi
+irmovl $100, %edi
 mrmovl $0x100, %eax
 irmovl $0, %ebx
 subl %ebx, %eax
@@ -21,7 +21,7 @@ loop:
 	irmovl $1, %eax
 	rmmovl %eax, $0x100
 	subl %edi, %edx
-	je exit
+	jge exit
 
 waitpong:
 	mrmovl $0x100, %eax
@@ -46,7 +46,7 @@ loop2:
 	irmovl $0, %eax
 	rmmovl %eax, $0x100
 	subl %edi, %edx
-	je exit
+	jge exit
 
 waitping:
 	mrmovl $0x100, %eax

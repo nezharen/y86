@@ -1,6 +1,6 @@
   0x000:              | 	.pos 0
   0x000: 30f601000000 | irmovl $1, %esi
-  0x006: 30f702000000 | irmovl $2, %edi
+  0x006: 30f764000000 | irmovl $100, %edi
   0x00c: 500f00010000 | mrmovl $0x100, %eax
   0x012: 30f300000000 | irmovl $0, %ebx
   0x018: 6130         | subl %ebx, %eax
@@ -21,7 +21,7 @@
   0x044: 30f001000000 | 	irmovl $1, %eax
   0x04a: 400f00010000 | 	rmmovl %eax, $0x100
   0x050: 6172         | 	subl %edi, %edx
-  0x052: 73bf000000   | 	je exit
+  0x052: 75bf000000   | 	jge exit
                       | 
   0x057:              | waitpong:
   0x057: 500f00010000 | 	mrmovl $0x100, %eax
@@ -46,7 +46,7 @@
   0x094: 30f000000000 | 	irmovl $0, %eax
   0x09a: 400f00010000 | 	rmmovl %eax, $0x100
   0x0a0: 6172         | 	subl %edi, %edx
-  0x0a2: 73bf000000   | 	je exit
+  0x0a2: 75bf000000   | 	jge exit
                       | 
   0x0a7:              | waitping:
   0x0a7: 500f00010000 | 	mrmovl $0x100, %eax
