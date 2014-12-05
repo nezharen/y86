@@ -1,0 +1,60 @@
+  0x000:              | 	.pos 0
+  0x000: 30f601000000 | irmovl $1, %esi
+  0x006: 30f702000000 | irmovl $2, %edi
+  0x00c: 500f00010000 | mrmovl $0x100, %eax
+  0x012: 30f300000000 | irmovl $0, %ebx
+  0x018: 6130         | subl %ebx, %eax
+  0x01a: 746f000000   | jne pong
+                      | 
+  0x01f:              | ping:
+  0x01f: 501f04010000 | 	mrmovl $0x104, %ecx
+  0x025: 6061         | 	addl %esi, %ecx
+  0x027: 2012         | 	rrmovl %ecx, %edx
+  0x029: 30f300010000 | 	irmovl $0x100, %ebx
+  0x02f: 30f004000000 | 	irmovl $4, %eax
+  0x035:              | loop:
+  0x035: 6003         | 	addl %eax, %ebx
+  0x037: 402300000000 | 	rmmovl %edx, (%ebx)
+  0x03d: 6161         | 	subl %esi, %ecx
+  0x03f: 7435000000   | 	jne loop
+                      | 
+  0x044: 30f001000000 | 	irmovl $1, %eax
+  0x04a: 400f00010000 | 	rmmovl %eax, $0x100
+  0x050: 6172         | 	subl %edi, %edx
+  0x052: 73bf000000   | 	je exit
+                      | 
+  0x057:              | waitpong:
+  0x057: 500f00010000 | 	mrmovl $0x100, %eax
+  0x05d: 30f300000000 | 	irmovl $0, %ebx
+  0x063: 6130         | 	subl %ebx, %eax
+  0x065: 7457000000   | 	jne waitpong
+                      | 
+  0x06a: 701f000000   | 	jmp ping
+                      | 
+  0x06f:              | pong:
+  0x06f: 501f04010000 | 	mrmovl $0x104, %ecx
+  0x075: 6061         | 	addl %esi, %ecx
+  0x077: 2012         | 	rrmovl %ecx, %edx
+  0x079: 30f300010000 | 	irmovl $0x100, %ebx
+  0x07f: 30f004000000 | 	irmovl $4, %eax
+  0x085:              | loop2:
+  0x085: 6003         | 	addl %eax, %ebx
+  0x087: 402300000000 | 	rmmovl %edx, (%ebx)
+  0x08d: 6161         | 	subl %esi, %ecx
+  0x08f: 7485000000   | 	jne loop2
+                      | 
+  0x094: 30f000000000 | 	irmovl $0, %eax
+  0x09a: 400f00010000 | 	rmmovl %eax, $0x100
+  0x0a0: 6172         | 	subl %edi, %edx
+  0x0a2: 73bf000000   | 	je exit
+                      | 
+  0x0a7:              | waitping:
+  0x0a7: 500f00010000 | 	mrmovl $0x100, %eax
+  0x0ad: 30f301000000 | 	irmovl $1, %ebx
+  0x0b3: 6130         | 	subl %ebx, %eax
+  0x0b5: 74a7000000   | 	jne waitping
+                      | 
+  0x0ba: 706f000000   | 	jmp pong
+                      | 
+  0x0bf:              | exit:
+  0x0bf: 00           | 	halt

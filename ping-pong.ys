@@ -1,0 +1,60 @@
+	.pos 0
+irmovl $1, %esi
+irmovl $2, %edi
+mrmovl $0x100, %eax
+irmovl $0, %ebx
+subl %ebx, %eax
+jne pong
+
+ping:
+	mrmovl $0x104, %ecx
+	addl %esi, %ecx
+	rrmovl %ecx, %edx
+	irmovl $0x100, %ebx
+	irmovl $4, %eax
+loop:
+	addl %eax, %ebx
+	rmmovl %edx, (%ebx)
+	subl %esi, %ecx
+	jne loop
+
+	irmovl $1, %eax
+	rmmovl %eax, $0x100
+	subl %edi, %edx
+	je exit
+
+waitpong:
+	mrmovl $0x100, %eax
+	irmovl $0, %ebx
+	subl %ebx, %eax
+	jne waitpong
+
+	jmp ping
+
+pong:
+	mrmovl $0x104, %ecx
+	addl %esi, %ecx
+	rrmovl %ecx, %edx
+	irmovl $0x100, %ebx
+	irmovl $4, %eax
+loop2:
+	addl %eax, %ebx
+	rmmovl %edx, (%ebx)
+	subl %esi, %ecx
+	jne loop2
+
+	irmovl $0, %eax
+	rmmovl %eax, $0x100
+	subl %edi, %edx
+	je exit
+
+waitping:
+	mrmovl $0x100, %eax
+	irmovl $1, %ebx
+	subl %ebx, %eax
+	jne waitping
+
+	jmp pong
+
+exit:
+	halt

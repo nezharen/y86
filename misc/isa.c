@@ -2,6 +2,8 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 #include "isa.h"
 
 
@@ -10,6 +12,8 @@ extern int gui_mode;
 
 /* Bytes Per Line = Block size of memory */
 #define BPL 32
+
+char *shmptr = (void *) -1;
 
 struct {
     char *name;
@@ -134,11 +138,28 @@ instr_ptr bad_instr()
 
 mem_t init_mem(int len)
 {
+    int shmid;
 
     mem_t result = (mem_t) malloc(sizeof(mem_rec));
     len = ((len+BPL-1)/BPL)*BPL;
     result->len = len;
-    result->contents = (byte_t *) calloc(len, 1);
+    if (shmptr == (void *) -1)
+    {
+        if ((shmid = shmget(0x3A2, len, SHM_R | SHM_W | IPC_CREAT)) < 0)
+        {
+            printf("error shmget\n");
+            exit(-1);
+        }
+        if ((shmptr = shmat(shmid, 0, 0)) == (void *) -1)
+        {
+            printf("error shmat\n");
+            exit(-1);
+        }
+        result->contents = (byte_t *) shmptr;
+        printf("share memory set\n");
+    }
+    else
+        result->contents = (byte_t *) calloc(len, 1);
     return result;
 }
 
@@ -149,7 +170,8 @@ void clear_mem(mem_t m)
 
 void free_mem(mem_t m)
 {
-    free((void *) m->contents);
+    if (shmptr != (void *)m->contents)
+        free((void *) m->contents);
     free((void *) m);
 }
 
